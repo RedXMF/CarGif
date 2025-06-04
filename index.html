@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prolog коли с различни правила и GIF</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 700px;
+      margin: 30px auto;
+      background: #f9f9f9;
+      color: #333;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      text-align: center;
+    }
+    textarea {
+      width: 90%;
+      max-width: 600px;
+      height: 120px;
+      font-family: monospace;
+      font-size: 16px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: 2px solid #007acc;
+      padding: 8px;
+      resize: vertical;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      font-size: 18px;
+      background-color: #007acc;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #005f99;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      min-height: 30px;
+      font-weight: bold;
+      color: #004a99;
+    }
+    .car-container {
+      margin-top: 30px;
+      min-height: 160px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #d0e8ff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #a0c4ff;
+    }
+    .car-gif {
+      max-width: 180px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #005f99;
+    }
+  </style>
+</head>
+<body>
+  <h1>Задание: Програма с Prolog за коли и GIF визуализация</h1>
+
+  <p class="instructions">
+    Имате задача да създадете малко приложение, което използва <strong>Пролог</strong> за логическо извеждане на коли.  
+    След като въведете Prolog заявка, програмата ще търси резултат и ако открие кола, ще покаже подходяща анимирана GIF картинка.  
+    <br><br>
+    <strong>Как да добавите собствен Prolog код?</strong><br>
+    - В кода в променливата <code>knowledge</code> можете да добавяте нови коли и правила.<br>
+    - Например: <code>car(tesla_model_s).</code> и съответно правила като <code>is_electric(X) :- car(X).</code><br>
+    <br>
+    <strong>Как да добавите нови GIF изображения?</strong><br>
+    - Намерете подходящ анимиран GIF в интернет (например в <a href="https://giphy.com" target="_blank">Giphy</a> или друг сайт).<br>
+    - Копирайте директния линк към GIF файла.<br>
+    - Добавете нов запис в обекта <code>carAnimations</code> с името на колата и HTML за картинката, например:<br>
+    <code>tesla_model_s: '&lt;img src="your_gif_link.gif" class="car-gif" alt="Tesla Model S" /&gt;'</code><br>
+    - Не забравяйте да добавите и колата в Prolog базата.<br>
+  </p>
+
+  <h1>Prolog коли с различни правила и GIF</h1>
+
+  <textarea id="prolog-input">
+% Примери на заявки:
+is_electric(X).
+is_suv(X).
+is_luxury(X).
+  </textarea><br />
+  <button onclick="runProlog()">Изпълни</button>
+
+  <div id="result"></div>
+  <div class="car-container" id="car-animation"></div>
+
+  <script src="https://unpkg.com/tau-prolog"></script>
+  <script>
+    const session = pl.create();
+
+    // Разширена база знания с коли и правила
+    const knowledge = `
+      car(tesla_model_s).
+car(mercedes_g_wagon).
+car(bmw_x5).
+car(ford_mustang).
+car(audi_a8).
+
+% Електрически коли
+electric(tesla_model_s).
+
+% SUV модели
+suv(mercedes_g_wagon).
+suv(bmw_x5).
+
+% Луксозни коли
+luxury(mercedes_g_wagon).
+luxury(audi_a8).
+
+% Правила
+is_electric(X) :- electric(X).
+is_suv(X) :- suv(X).
+is_luxury(X) :- luxury(X).
+    `;
+
+    session.consult(knowledge);
+
+    const carAnimations = {
+      tesla_model_s: '<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExenF5cnRkdGwwZDBwMGo0MXl1OWNvNmozNWN1aXZoNWt3NDNhaWc1aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RWZRMPbu3lc7m/giphy.gif" class="car-gif" alt="Tesla Model S" />',
+      mercedes_g_wagon: '<img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWFodmlobzBxZGswaHp2OWM2cTcybnJ2OXRnZnZ3cWZzdnFjeTUyMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/M2tWvvyYC0und2A7PA/giphy.gif" class="car-gif" alt="Mercedes G-Wagon" />',
+      bmw_x5: '<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExam1kbjI2aXZvaW5ieXZtZ2s1aHdybnN4ZG0zZ2xkbjBtODdvbXAybyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6fRfCfE1PFvJAjqNCo/giphy.gif" class="car-gif" alt="BMW X5" />',
+      ford_mustang: '<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHpmd2NpczN3dWVnYnp4cTZ5ZXpwcDZ1NGx1N2pvbTFtZnpxZjY3eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LZ3vhyk0T1MVa/giphy.gif" class="car-gif" alt="Ford Mustang" />',
+      audi_a8: '<img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2tvaXlvZ2I5a254cGpvYjMxb3g2b2t3YTM0dXU0bmZ5czEyemRhYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YOpL4uCbRX4BCpMs34/giphy.gif" class="car-gif" alt="Audi A8" />'
+    };
+
+    function runProlog() {
+      const input = document.getElementById("prolog-input").value;
+      const resultDiv = document.getElementById("result");
+      const animDiv = document.getElementById("car-animation");
+
+      resultDiv.innerHTML = "";
+      animDiv.innerHTML = "";
+
+      session.query(input);
+      session.answers(answer => {
+        if(answer === false) {
+          resultDiv.innerHTML += `<p>Няма повече резултати.</p>`;
+          return;
+        }
+        const str = pl.format_answer(answer);
+        if (str === "false.") {
+          resultDiv.innerHTML = "<p>Няма резултати за тази заявка.</p>";
+          return;
+        }
+        resultDiv.innerHTML += `<p>${str}</p>`;
+
+        const match = str.match(/X = (\w+)/);
+        if (match) {
+          const car = match[1];
+          if (carAnimations[car]) {
+            animDiv.innerHTML = carAnimations[car];
+          } else {
+            animDiv.innerHTML = "<p>Няма GIF за тази кола.</p>";
+          }
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
