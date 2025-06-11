@@ -4,141 +4,192 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Prolog коли с различни правила и GIF</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 700px;
-      margin: 30px auto;
-      background: #f9f9f9;
-      color: #333;
-      padding: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      border-radius: 10px;
-      text-align: center;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+      margin: 0;
+      padding: 0;
     }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      color: #333;
+    }
+
+    h1 {
+      color: #007acc;
+      font-size: 28px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .instructions {
+      text-align: left;
+      background: #f4faff;
+      padding: 20px;
+      border-left: 6px solid #007acc;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .instructions code {
+      background-color: #eef3f8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 90%;
+    }
+
+    .instructions a {
+      color: #007acc;
+      text-decoration: none;
+    }
+
+    .instructions a:hover {
+      text-decoration: underline;
+    }
+
     textarea {
       width: 90%;
-      max-width: 600px;
-      height: 120px;
-      font-family: monospace;
+      max-width: 650px;
+      height: 130px;
+      font-family: 'Courier New', monospace;
       font-size: 16px;
       margin-top: 10px;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 2px solid #007acc;
-      padding: 8px;
-      resize: vertical;
+      padding: 10px;
+      background-color: #f0faff;
     }
+
     button {
       margin-top: 15px;
-      padding: 10px 25px;
+      padding: 12px 30px;
       font-size: 18px;
-      background-color: #007acc;
+      background: linear-gradient(135deg, #007acc, #005f99);
       border: none;
       color: white;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
     }
+
     button:hover {
-      background-color: #005f99;
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 123, 204, 0.4);
     }
+
     #result {
-      margin-top: 20px;
+      margin-top: 25px;
       font-size: 18px;
-      min-height: 30px;
       font-weight: bold;
       color: #004a99;
+      min-height: 30px;
     }
+
     .car-container {
       margin-top: 30px;
-      min-height: 160px;
+      min-height: 180px;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #d0e8ff;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #a0c4ff;
+      background: #e0f0ff;
+      border-radius: 15px;
+      box-shadow: inset 0 0 10px rgba(0, 94, 153, 0.2);
     }
+
     .car-gif {
-      max-width: 180px;
+      max-width: 200px;
       border-radius: 12px;
-      box-shadow: 0 0 10px #005f99;
+      box-shadow: 0 0 12px rgba(0, 95, 153, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .car-gif:hover {
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
-  <h1>Задание: Програма с Prolog за коли и GIF визуализация</h1>
 
-  <p class="instructions">
-    Имате задача да създадете малко приложение, което използва <strong>Пролог</strong> за логическо извеждане на коли.  
-    След като въведете Prolog заявка, програмата ще търси резултат и ако открие кола, ще покаже подходяща анимирана GIF картинка.  
-    <br><br>
-    <strong>Как да добавите собствен Prolog код?</strong><br>
-    - В кода в променливата <code>knowledge</code> можете да добавяте нови коли и правила.<br>
-    - Например: <code>car(tesla_model_s).</code> и съответно правила като <code>is_electric(X) :- car(X).</code><br>
-    <br>
-    <strong>Как да добавите нови GIF изображения?</strong><br>
-    - Намерете подходящ анимиран GIF в интернет (например в <a href="https://giphy.com" target="_blank">Giphy</a> или друг сайт).<br>
-    - Копирайте директния линк към GIF файла.<br>
-    - Добавете нов запис в обекта <code>carAnimations</code> с името на колата и HTML за картинката, например:<br>
-    <code>tesla_model_s: '&lt;img src="your_gif_link.gif" class="car-gif" alt="Tesla Model S" /&gt;'</code><br>
-    - Не забравяйте да добавите и колата в Prolog базата.<br>
-  </p>
+  <div class="container">
+    <h1><i class="fas fa-car"></i> Prolog коли с различни правила и GIF</h1>
 
-  <h1>Prolog коли с различни правила и GIF</h1>
+    <p class="instructions">
+      <i class="fas fa-info-circle"></i> <strong>Инструкции:</strong><br><br>
+      <strong>Добавяне на Prolog коли и правила:</strong><br>
+      - Пример: <code>car(tesla_model_s).</code> или <code>is_electric(X) :- car(X).</code><br><br>
 
-  <textarea id="prolog-input">
-% Примери на заявки:
+      <strong>Добавяне на GIF изображения:</strong><br>
+      - Намерете GIF от <a href="https://giphy.com" target="_blank">Giphy</a> или друг сайт.<br>
+      - В обекта <code>carAnimations</code> добавете:<br>
+      <code>tesla_model_s: '&lt;img src="..." class="car-gif" /&gt;'</code><br>
+    </p>
+
+    <textarea id="prolog-input">
+% Примери:
 is_electric(X).
 is_suv(X).
 is_luxury(X).
-  </textarea><br />
-  <button onclick="runProlog()">Изпълни</button>
+    </textarea><br />
 
-  <div id="result"></div>
-  <div class="car-container" id="car-animation"></div>
+    <button onclick="runProlog()"><i class="fas fa-play"></i> Изпълни</button>
+
+    <div id="result"></div>
+    <div class="car-container" id="car-animation"></div>
+  </div>
 
   <script src="https://unpkg.com/tau-prolog"></script>
   <script>
     const session = pl.create();
 
-    // Разширена база знания с коли и правила
     const knowledge = `
       car(tesla_model_s).
-car(mercedes_g_wagon).
-car(bmw_x5).
-car(ford_mustang).
-car(audi_a8).
+      car(mercedes_g_wagon).
+      car(bmw_x5).
+      car(ford_mustang).
+      car(audi_a8).
 
-% Електрически коли
-electric(tesla_model_s).
+      electric(tesla_model_s).
 
-% SUV модели
-suv(mercedes_g_wagon).
-suv(bmw_x5).
+      suv(mercedes_g_wagon).
+      suv(bmw_x5).
 
-% Луксозни коли
-luxury(mercedes_g_wagon).
-luxury(audi_a8).
+      luxury(mercedes_g_wagon).
+      luxury(audi_a8).
 
-% Правила
-is_electric(X) :- electric(X).
-is_suv(X) :- suv(X).
-is_luxury(X) :- luxury(X).
+      is_electric(X) :- electric(X).
+      is_suv(X) :- suv(X).
+      is_luxury(X) :- luxury(X).
     `;
 
     session.consult(knowledge);
 
     const carAnimations = {
-      tesla_model_s: '<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExenF5cnRkdGwwZDBwMGo0MXl1OWNvNmozNWN1aXZoNWt3NDNhaWc1aiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RWZRMPbu3lc7m/giphy.gif" class="car-gif" alt="Tesla Model S" />',
-      mercedes_g_wagon: '<img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWFodmlobzBxZGswaHp2OWM2cTcybnJ2OXRnZnZ3cWZzdnFjeTUyMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/M2tWvvyYC0und2A7PA/giphy.gif" class="car-gif" alt="Mercedes G-Wagon" />',
-      bmw_x5: '<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExam1kbjI2aXZvaW5ieXZtZ2s1aHdybnN4ZG0zZ2xkbjBtODdvbXAybyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6fRfCfE1PFvJAjqNCo/giphy.gif" class="car-gif" alt="BMW X5" />',
-      ford_mustang: '<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHpmd2NpczN3dWVnYnp4cTZ5ZXpwcDZ1NGx1N2pvbTFtZnpxZjY3eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LZ3vhyk0T1MVa/giphy.gif" class="car-gif" alt="Ford Mustang" />',
-      audi_a8: '<img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2tvaXlvZ2I5a254cGpvYjMxb3g2b2t3YTM0dXU0bmZ5czEyemRhYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/YOpL4uCbRX4BCpMs34/giphy.gif" class="car-gif" alt="Audi A8" />'
+      tesla_model_s: '<img src="https://media1.giphy.com/media/RWZRMPbu3lc7m/giphy.gif" class="car-gif" alt="Tesla Model S" />',
+      mercedes_g_wagon: '<img src="https://media4.giphy.com/media/M2tWvvyYC0und2A7PA/giphy.gif" class="car-gif" alt="Mercedes G-Wagon" />',
+      bmw_x5: '<img src="https://media2.giphy.com/media/6fRfCfE1PFvJAjqNCo/giphy.gif" class="car-gif" alt="BMW X5" />',
+      ford_mustang: '<img src="https://media1.giphy.com/media/LZ3vhyk0T1MVa/giphy.gif" class="car-gif" alt="Ford Mustang" />',
+      audi_a8: '<img src="https://media3.giphy.com/media/YOpL4uCbRX4BCpMs34/giphy.gif" class="car-gif" alt="Audi A8" />'
     };
 
     function runProlog() {
-      const input = document.getElementById("prolog-input").value;
+      const input = document.getElementById("prolog-input").value.trim();
       const resultDiv = document.getElementById("result");
       const animDiv = document.getElementById("car-animation");
 
@@ -147,7 +198,7 @@ is_luxury(X) :- luxury(X).
 
       session.query(input);
       session.answers(answer => {
-        if(answer === false) {
+        if (answer === false) {
           resultDiv.innerHTML += `<p>Няма повече резултати.</p>`;
           return;
         }
@@ -161,11 +212,7 @@ is_luxury(X) :- luxury(X).
         const match = str.match(/X = (\w+)/);
         if (match) {
           const car = match[1];
-          if (carAnimations[car]) {
-            animDiv.innerHTML = carAnimations[car];
-          } else {
-            animDiv.innerHTML = "<p>Няма GIF за тази кола.</p>";
-          }
+          animDiv.innerHTML = carAnimations[car] || "<p>Няма GIF за тази кола.</p>";
         }
       });
     }
